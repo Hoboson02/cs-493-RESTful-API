@@ -1,22 +1,12 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-  PutCommand,
-  GetCommand,
-  DeleteCommand,
-} from "@aws-sdk/lib-dynamodb";
+const AWS = require('aws-sdk');
 
-const client = new DynamoDBClient({});
+const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
-const dynamoDb = DynamoDBDocumentClient.from(client);
-
-const TABLE = 'api-gateway-test';
-export const handler = async (event) => {
- let data = await dynamoDb.send(
-          new ScanCommand({ TableName: TABLE })
-        );
-        // data = data.Items;
+const params = {
+    TableName: 'api-gateway-test'
+};
+exports.handler = async (event) => {
+ let data = await dynamoDbClient.scan(params);
  const response = {
    isBase64Encoded: false,
    headers: {'Content-Type': 'application/json'}
