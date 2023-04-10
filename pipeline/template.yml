@@ -4,7 +4,7 @@ Description: github-codepipeline
 Parameters:
   GitHubRepo:
     Type: String
-    Default: cs-493-RESTful-API-dev
+    Default: cs-493-RESTful-API
   GitHubBranch:
     Type: String
     Default: main

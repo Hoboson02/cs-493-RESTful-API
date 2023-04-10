@@ -1,4 +1,4 @@
-service: cs-493-RESTful-API-dev
+service: cs-493-RESTful-API
 
 frameworkVersion: '3'
 
