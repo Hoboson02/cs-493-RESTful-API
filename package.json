@@ -1,5 +1,5 @@
 {
-  "name": "<REPLACE_PROJECT_NAME>",
+  "name": "cs-493_RESTful-API",
   "version": "0.1.0",
   "private": true,
   "scripts": {
