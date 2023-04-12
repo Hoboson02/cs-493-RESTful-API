@@ -17,27 +17,21 @@ exports.handler = async (event) => {
    
    var path = JSON.stringify(event['path']);
    path.replace('"','')
-    const pathArray = path.split("/")
+    // const pathArray = path.split("/")
+    pathArray = ['business', 'name']
     // pathArray.pop()
-    pathArray.shift()
-    pathArray[pathArray.length-1] = pathArray[pathArray.length-1].replace('\"','')
+    // pathArray.shift()
+    // pathArray[pathArray.length-1] = pathArray[pathArray.length-1].replace('\"','')
     if (pathArray[0] == 'business') {
-     if (pathArray.length >= 1) {
-      if (pathArray.length >= 2) {
-       if (pathArray.length >= 3) {
-        response.body = JSON.stringify(data['Items'][0]['name'][0][pathArray[1]][0][pathArray[2]][0]);
-       }
-       else {
-        response.body = JSON.stringify(data['Items'][0]['name'][0][pathArray[1]][0]);
-       }
+      if (pathArray.length == 0) {
+        response.body = JSON.stringify(businessPath[0]);
       }
       else {
-       response.body = JSON.stringify(data['Items'][0]['name']);
+        for (var i =0; i <= pathArray.length-1; i++) {
+          body+=`[${pathArray[i]}]`
+          console.log(pathArray[i])
+        }
       }
-     }
-     else {
-      response.body = JSON.stringify(data['Items'][0]);
-     }
     }
     else if (pathArray[0] == 'user'){
      response.body = JSON.stringify(data['Items'][1]);
