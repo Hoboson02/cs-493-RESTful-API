@@ -1,16 +1,5 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import {
-  DynamoDBDocumentClient,
-  ScanCommand,
-  PutCommand, 
-  UpdateCommand,
-  GetCommand,
-  DeleteCommand,
-} from "@aws-sdk/lib-dynamodb";
-
-const client = new DynamoDBClient({region: 'us-west-2'});
-
-const dynamoDb = DynamoDBDocumentClient.from(client);
+const AWS = require('aws-sdk');
+const dynamoDb = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 
 const TABLE = 'api-gateway-test';
 
@@ -22,14 +11,12 @@ async function updateNestedObject(tableName, primaryKey, primaryValue, nestedObj
   }, {});
   const params = {
     TableName: tableName,
-    Key: {
-      [primaryKey]: primaryValue
-    },
+    Key: { [primaryKey]: primaryValue },
     UpdateExpression: `set ${updateExpression}`,
     ExpressionAttributeValues: expressionAttributeValues
   };
   try {
-    await dynamoDb.send(new UpdateCommand(params));
+    await dynamoDb.update(params).promise();
     console.log("Update succeeded");
   } catch (err) {
     console.error("Update failed", err);
