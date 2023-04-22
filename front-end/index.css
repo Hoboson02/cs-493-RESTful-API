@@ -1,0 +1,25 @@
+#response {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  color: rgb(86, 86, 192);
+}
+#data,
+label[for='data'],
+#formatJsonButton,
+#uploadImageButton,
+#imageFile {
+  display: none;
+}
+
+#pageTitle {
+  /* background-color: gray; */
+  /* color: white; */
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin: 0;
+}

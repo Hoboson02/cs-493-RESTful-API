@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <title>REST API Test</title>
+  </head>
+  <header>
+    <h1 id ="pageTitle">REST API Test</h1>
+  </header>
+  <body>
+    <form id="apiForm">
+      <label for="requestType">Request Type:</label><br />
+      <select id="requestType" name="requestType">
+        <option value="GET">GET</option>
+        <option value="PUT">PUT</option>
+        <option value="POST">POST</option>
+        <option value="DELETE">DELETE</option>
+      </select><br />
+      <label for="url">URL:</label><br />
+      <input type="text" id="url" name="url" /><br />
+      <label for="data">Data:</label><br />
+      <textarea id="data" name="data"></textarea><br />
+      <button type="button" id="formatJsonButton">Format as JSON</button><br />
+      <button type="button" id="uploadImageButton">Upload Image</button><br />
+      <input type="file" id="imageFile" accept="image/*" /><br />
+      <input type="submit" value="Submit" />
+    </form>
+    <h2>Response</h2>
+    <div id="response"></div>
+    <script type="text/javascript" src="/index.js"></script>
+  </body>
+</html>
