@@ -141,7 +141,7 @@ export const handler = async (event) => {
       }
       console.log(result);
       if (result.toString().includes("Your Rating was Invalid")) {
-        result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-3 times for your price rating.";
+        result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
       } else {
         updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
         result = "Your POST request was successfully completed"
