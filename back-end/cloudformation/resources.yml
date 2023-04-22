@@ -11,7 +11,7 @@
 restAPIBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: cs493-api-test
+      Bucket: cs493-api-test2
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -19,4 +19,4 @@ restAPIBucketPolicy:
             Effect: "Allow"
             Principal: "*"
             Action: "s3:GetObject"
-            Resource: "arn:aws:s3:::cs493-api-test/*"
+            Resource: "arn:aws:s3:::cs493-api-test2/*"
