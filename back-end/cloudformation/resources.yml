@@ -1,10 +1,22 @@
-ApiGatewayRestApi:
-  Type: AWS::ApiGateway::RestApi
-  Properties:
-    ApiKeySourceType: HEADER
-    Description: An API Gateway with a Lambda Integration
-    EndpointConfiguration:
-      Types:
-        - EDGE
-    Name: cs493RestfulAPI
+# ApiGatewayRestApi:
+#   Type: AWS::ApiGateway::RestApi
+#   Properties:
+#     ApiKeySourceType: HEADER
+#     Description: An API Gateway with a Lambda Integration
+#     EndpointConfiguration:
+#       Types:
+#         - EDGE
+#     Name: cs493RestfulAPI
 
+restAPIBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: cs493-api-test
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "PublicReadGetObject"
+            Effect: "Allow"
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: "arn:aws:s3:::cs493-api-test/*"

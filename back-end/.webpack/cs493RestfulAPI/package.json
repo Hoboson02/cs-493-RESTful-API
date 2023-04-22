@@ -1,0 +1,13 @@
+{
+  "name": "cs-493-RESTful-API",
+  "version": "1.0.0",
+  "description": "Packaged externals for cs-493-RESTful-API",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.170.0",
+    "@aws-sdk/lib-dynamodb": "^3.170.0",
+    "@aws-sdk/smithy-client": "",
+    "@aws-sdk/types": ""
+  }
+}
