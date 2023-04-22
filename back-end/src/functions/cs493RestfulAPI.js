@@ -133,7 +133,7 @@ export const handler = async (event) => {
             result.push("Your Rating was Invalid");
             break;
           }
-          if (reviews[review].priceRating.length > 3 || reviews[review].priceRating.length < 1 || !onlyContainsChar(reviews[review].priceRating, "$")) {
+          if (reviews[review].priceRating.length > 4 || reviews[review].priceRating.length < 1 || !onlyContainsChar(reviews[review].priceRating, "$")) {
             result.push("Your Rating was Invalid");
             break;
           }
