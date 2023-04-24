@@ -117,4 +117,10 @@ Resources:
 Outputs:
   ApiUrl:
     Description: The URL of the API Gateway endpoint.
-    Value:!Join ['', ['https://',!Ref RestApi,'.execute-api.',!Ref 'AWS::Region','.amazonaws.com/prod']]
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !Ref RestApi
+        - '.execute-api.'
+        - !Ref 'AWS::Region'
+        - '.amazonaws.com/prod'
