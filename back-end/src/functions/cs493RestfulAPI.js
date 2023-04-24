@@ -87,6 +87,7 @@ export const handler = async (event) => {
    pathArray[pathArray.length-1] = pathArray[pathArray.length-1].replace('\"','');
    const businessPath = data['Items'][0];
    const userPath = data['Items'][1];
+   const eventBody = event['body'];
    switch (request) {
     case 'GET':
      if (pathArray[0] == 'business') {
@@ -114,7 +115,6 @@ export const handler = async (event) => {
      }
      break;
     case 'POST':
-     const eventBody = event['body'];
      if (pathArray[0] == 'business') {
       let result = ["entityName"];
       for (let i = 1; i < pathArray.length; i++) {
@@ -165,6 +165,7 @@ export const handler = async (event) => {
             result.push(pathArray[i]);
         }
       deleteNestedObject("api-gateway-test", "id", "business", result);
+      result = "Your DELETE request was successfully completed";
       response.body = JSON.stringify(result);
      }
      else if (pathArray[0] == 'user'){
@@ -173,6 +174,7 @@ export const handler = async (event) => {
             result.push(pathArray[i]);
         }
       deleteNestedObject("api-gateway-test", "id", "user", result);
+      result = "Your DELETE request was successfully completed";
       response.body = JSON.stringify(result);
      }
      else{
@@ -209,7 +211,7 @@ export const handler = async (event) => {
         result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
       } else {
         updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
-        result = "Your POST request was successfully completed";
+        result = "Your PUT request was successfully completed";
       }
     //   updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
       response.body = JSON.stringify(result);
