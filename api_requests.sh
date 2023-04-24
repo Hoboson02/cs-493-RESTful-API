@@ -53,14 +53,14 @@ curl --location --request DELETE 'https://zx99y1s10k.execute-api.us-west-2.amazo
 
 # PUT REQUESTS
 
-# curl --location 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business/testBusiness6/reviews' \
-# --header 'Content-Type: application/json' \
-# --data '{"reviewTest3": {
-#             "starRating": "5",
-#             "reviewContent": "It was good",
-#             "priceRating": "$"
-#           }}'
+curl --location 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business/testBusiness6/reviews' \
+--header 'Content-Type: application/json' \
+--data '{"reviewTest3": {
+            "starRating": "5",
+            "reviewContent": "It was good",
+            "priceRating": "$"
+          }}'
 
-# curl --location 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business' \
-# --header 'Content-Type: application/json' \
-# --data '{"testBusiness4":{"reviews":{"reviewTest3":{"starRating":"2","reviewContent":"It was mostly terrible","priceRating":"$$$$"},"reviewTest2":{"starRating":"3","reviewContent":"It was alright","priceRating":"$$$$"},"reviewTest1":{"starRating":"5","reviewContent":"It was the best!","priceRating":"$$$"}},"photos":{},"info":{"zipCode":"97702","address":"1500 SW Chandler Ave.","city":"Bend","name":"OSU-Cascades","phone#":"(541) 322-3100","state":"Oregon","category":"University"}}}'
+curl --location 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business' \
+--header 'Content-Type: application/json' \
+--data '{"testBusiness4":{"reviews":{"reviewTest3":{"starRating":"2","reviewContent":"It was mostly terrible","priceRating":"$$$$"},"reviewTest2":{"starRating":"3","reviewContent":"It was alright","priceRating":"$$$$"},"reviewTest1":{"starRating":"5","reviewContent":"It was the best!","priceRating":"$$$"}},"photos":{},"info":{"zipCode":"97702","address":"1500 SW Chandler Ave.","city":"Bend","name":"OSU-Cascades","phone#":"(541) 322-3100","state":"Oregon","category":"University"}}}'
