@@ -49,3 +49,6 @@ curl --location 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/busi
 curl --location --request DELETE 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business/testBusiness6'
 curl --location --request DELETE 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business/testBusiness1/photos/testPhoto'
 curl --location --request DELETE 'https://zx99y1s10k.execute-api.us-west-2.amazonaws.com/dev/business/testBusiness6/reviews/reviewTest3'
+
+
+# PUT REQUESTS

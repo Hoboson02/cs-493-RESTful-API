@@ -124,12 +124,12 @@ export const handler = async (event) => {
       let jsonEventBody = JSON.parse(eventBody);
       for (const business in jsonEventBody) {
         console.log(business);
-        let reviews = jsonEventBody
+        let reviews = jsonEventBody;
         if (jsonEventBody[business].hasOwnProperty("reviews")) {
           reviews = reviews[business].reviews;
         }
         for (const review in reviews) {
-          if (reviews[review].starRating > 5 || reviews[review].starRating < 0) {
+          if (reviews[review].starRating > 5 || reviews[review].starRating < 0 || reviews[review].starRating.match(/^\d+$/) == null) {
             result.push("Your Rating was Invalid");
             break;
           }
@@ -144,7 +144,7 @@ export const handler = async (event) => {
         result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
       } else {
         updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
-        result = "Your POST request was successfully completed"
+        result = "Your POST request was successfully completed";
       }
     //   updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
       response.body = JSON.stringify(result);
@@ -178,6 +178,50 @@ export const handler = async (event) => {
      else{
       response.body = JSON.stringify(data['Items']);
      }
+     break;
+    case 'PUT':
+     if (pathArray[0] == 'business') {
+      let result = ["entityName"];
+      for (let i = 1; i < pathArray.length; i++) {
+            result.push(pathArray[i]);
+        }
+      console.log(typeof eventBody);
+      let jsonEventBody = JSON.parse(eventBody);
+      for (const business in jsonEventBody) {
+        console.log(business);
+        let reviews = jsonEventBody;
+        if (jsonEventBody[business].hasOwnProperty("reviews")) {
+          reviews = reviews[business].reviews;
+        }
+        for (const review in reviews) {
+          if (reviews[review].starRating > 5 || reviews[review].starRating < 0 || reviews[review].starRating.match(/^\d+$/) == null) {
+            result.push("Your Rating was Invalid");
+            break;
+          }
+          if (reviews[review].priceRating.length > 4 || reviews[review].priceRating.length < 1 || !onlyContainsChar(reviews[review].priceRating, "$")) {
+            result.push("Your Rating was Invalid");
+            break;
+          }
+        }
+      }
+      console.log(result);
+      if (result.toString().includes("Your Rating was Invalid")) {
+        result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
+      } else {
+        updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+        result = "Your POST request was successfully completed";
+      }
+    //   updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+      response.body = JSON.stringify(result);
+     }
+     else if (pathArray[0] == 'user'){
+      updateNestedObject("api-gateway-test", "id", "user", ["entityName"], eventBody);
+      response.body = JSON.stringify(event);
+     }
+     else {
+      response.body = JSON.stringify(data['Items']);
+     }
+     // response.body = request
      break;
     default: 
      response.body = (`Unknown request: ${request}`);
