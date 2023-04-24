@@ -5,13 +5,14 @@ Mappings:
       Integration:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
-        Uri: !Join
-          - ''
-          - - 'arn:aws:apigateway:'
-            - !Ref 'AWS::Region'
-            - ':lambda:path/2015-03-31/functions/'
-            - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-            - '/invocations'
+        Uri: 
+          !Join
+            - ''
+            - - 'arn:aws:apigateway:'
+              - !Ref 'AWS::Region'
+              - ':lambda:path/2015-03-31/functions/'
+              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+              - '/invocations'
       MethodResponses:
         - StatusCode: '200'
           ResponseModels:
@@ -117,10 +118,11 @@ Resources:
 Outputs:
   ApiUrl:
     Description: The URL of the API Gateway endpoint.
-    Value: !Join
-      - ''
-      - - 'https://'
-        - !Ref RestApi
-        - '.execute-api.'
-        - !Ref 'AWS::Region'
-        - '.amazonaws.com/prod'
+    Value: 
+      !Join
+        - ''
+        - - 'https://'
+          - !Ref RestApi
+          - '.execute-api.'
+          - !Ref 'AWS::Region'
+          - '.amazonaws.com/prod'
