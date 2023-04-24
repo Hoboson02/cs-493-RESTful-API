@@ -1,28 +1,8 @@
-Mappings:
-  MethodConfig:
-    Common:
-      AuthorizationType: NONE
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri: 
-          !Join
-            - ''
-            - - 'arn:aws:apigateway:'
-              - !Ref 'AWS::Region'
-              - ':lambda:path/2015-03-31/functions/'
-              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-              - '/invocations'
-      MethodResponses:
-        - StatusCode: '200'
-          ResponseModels:
-            application/json: Empty
-
 Resources:
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: MyRestApi-test
+      Name: MyRestApi
       EndpointConfiguration:
         Types:
           - REGIONAL
@@ -37,18 +17,48 @@ Resources:
   GetMethod:
     Type: AWS::ApiGateway::Method
     Properties:
+      AuthorizationType: NONE
       HttpMethod: GET
       ResourceId: !Ref Resource
       RestApiId: !Ref RestApi
-      << : !FindInMap [MethodConfig, Common,]
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri:
+          !Join
+            - ''
+            - - 'arn:aws:apigateway:'
+              - !Ref 'AWS::Region'
+              - ':lambda:path/2015-03-31/functions/'
+              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+              - '/invocations'
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
 
   PostMethod:
     Type: AWS::ApiGateway::Method
     Properties:
+      AuthorizationType: NONE
       HttpMethod: POST
       ResourceId: !Ref Resource
       RestApiId: !Ref RestApi
-      << : !FindInMap [MethodConfig, Common,]
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri:
+          !Join
+            - ''
+            - - 'arn:aws:apigateway:'
+              - !Ref 'AWS::Region'
+              - ':lambda:path/2015-03-31/functions/'
+              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+              - '/invocations'
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
 
   BusinessResource:
     Type: AWS::ApiGateway::Resource
@@ -57,21 +67,51 @@ Resources:
       PathPart: business
       RestApiId: !Ref RestApi
 
-  BusinessGetMethod:
+   BusinessGetMethod:
     Type: AWS::ApiGateway::Method
     Properties:
+      AuthorizationType: NONE
       HttpMethod: GET
       ResourceId: !Ref BusinessResource
       RestApiId: !Ref RestApi
-      << : !FindInMap [MethodConfig, Common,]
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri:
+          !Join
+            - ''
+            - - 'arn:aws:apigateway:'
+              - !Ref 'AWS::Region'
+              - ':lambda:path/2015-03-31/functions/'
+              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+              - '/invocations'
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
 
   BusinessPostMethod:
     Type: AWS::ApiGateway::Method
     Properties:
+      AuthorizationType: NONE
       HttpMethod: POST
       ResourceId: !Ref BusinessResource
       RestApiId: !Ref RestApi
-      << : !FindInMap [MethodConfig, Common,]
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri:
+          !Join
+            - ''
+            - - 'arn:aws:apigateway:'
+              - !Ref 'AWS::Region'
+              - ':lambda:path/2015-03-31/functions/'
+              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+              - '/invocations'
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
 
   Deployment:
     Type: AWS::ApiGateway::Deployment
@@ -95,7 +135,7 @@ Resources:
     Properties:
       CloudWatchRoleArn: !GetAtt CloudWatchRole.Arn
 
-  CloudWatchRole:
+    CloudWatchRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -118,11 +158,4 @@ Resources:
 Outputs:
   ApiUrl:
     Description: The URL of the API Gateway endpoint.
-    Value: 
-      !Join
-        - ''
-        - - 'https://'
-          - !Ref RestApi
-          - '.execute-api.'
-          - !Ref 'AWS::Region'
-          - '.amazonaws.com/prod'
+    Value:!Join ['', ['https://',!Ref RestApi,'.execute-api.',!Ref 'AWS::Region','.amazonaws.com/prod']]
