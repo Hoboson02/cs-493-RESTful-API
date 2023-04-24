@@ -67,7 +67,7 @@ Resources:
       PathPart: business
       RestApiId: !Ref RestApi
 
-   BusinessGetMethod:
+  BusinessGetMethod:
     Type: AWS::ApiGateway::Method
     Properties:
       AuthorizationType: NONE
@@ -135,7 +135,7 @@ Resources:
     Properties:
       CloudWatchRoleArn: !GetAtt CloudWatchRole.Arn
 
-    CloudWatchRole:
+  CloudWatchRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
