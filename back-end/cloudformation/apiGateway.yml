@@ -1,0 +1,120 @@
+Mappings:
+  MethodConfig:
+    Common:
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+            - '/invocations'
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseModels:
+            application/json: Empty
+
+Resources:
+  RestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: MyRestApi-test
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  Resource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt RestApi.RootResourceId
+      PathPart: myresource
+      RestApiId: !Ref RestApi
+
+  GetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId: !Ref Resource
+      RestApiId: !Ref RestApi
+      << : !FindInMap [MethodConfig, Common,]
+
+  PostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId: !Ref Resource
+      RestApiId: !Ref RestApi
+      << : !FindInMap [MethodConfig, Common,]
+
+  BusinessResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt RestApi.RootResourceId
+      PathPart: business
+      RestApiId: !Ref RestApi
+
+  BusinessGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: GET
+      ResourceId: !Ref BusinessResource
+      RestApiId: !Ref RestApi
+      << : !FindInMap [MethodConfig, Common,]
+
+  BusinessPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      HttpMethod: POST
+      ResourceId: !Ref BusinessResource
+      RestApiId: !Ref RestApi
+      << : !FindInMap [MethodConfig, Common,]
+
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref RestApi
+      StageName: prod
+
+  Stage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref Deployment
+      StageName: prod
+      MethodSettings:
+        - DataTraceEnabled: true
+          HttpMethod: '*'
+          LoggingLevel: INFO
+          ResourcePath: '/*'
+
+  ApiGatewayAccount:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn: !GetAtt CloudWatchRole.Arn
+
+  CloudWatchRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - apigateway.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  PermissionForApigatewayToInvokeLambdaFunction:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
+      Action: lambda:invokeFunction
+      Principal: apigateway.amazonaws.com
+
+Outputs:
+  ApiUrl:
+    Description: The URL of the API Gateway endpoint.
+    Value:!Join ['', ['https://',!Ref RestApi,'.execute-api.',!Ref 'AWS::Region','.amazonaws.com/prod']]
