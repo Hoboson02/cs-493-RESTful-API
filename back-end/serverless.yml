@@ -37,8 +37,8 @@ provider:
       Resource:
         - !Sub arn:aws:secretsmanager:${self:provider.region}:${AWS::AccountId}:secret:${self:service}-*
 
-resources:
-  - ${file(cloudformation/apiGateway.yml)}
+# resources:
+#   - ${file(cloudformation/apiGateway.yml)}
 
 functions:
   - ${file(cloudformation/functions.yml)}
