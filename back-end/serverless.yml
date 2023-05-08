@@ -1,4 +1,4 @@
-service: cs-493-RESTful-API
+service: cs-493-restful-api
 
 frameworkVersion: '3'
 
@@ -37,8 +37,8 @@ provider:
       Resource:
         - !Sub arn:aws:secretsmanager:${self:provider.region}:${AWS::AccountId}:secret:${self:service}-*
 
-# resources:
-#   - ${file(cloudformation/apiGateway.yml)}
+resources:
+  - ${file(cloudformation/resources.yml)}
 
 functions:
   - ${file(cloudformation/functions.yml)}

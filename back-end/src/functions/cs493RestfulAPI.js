@@ -65,7 +65,7 @@ async function updateNestedObject(tableName, primaryKey, primaryValue, nestedObj
 }
 
 export const handler = async (event) => {
- 
+ console.log(event);
  const request = event['httpMethod'];
  let data = await dynamoDb.send(
           new ScanCommand({ TableName: TABLE })
