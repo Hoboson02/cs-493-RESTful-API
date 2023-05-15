@@ -40,6 +40,7 @@ provider:
 
 resources:
   - ${file(cloudformation/resources.yml)}
+  - ${file(cloudformation/userPool.yml)}
 
 functions:
   - ${file(cloudformation/functions.yml)}
