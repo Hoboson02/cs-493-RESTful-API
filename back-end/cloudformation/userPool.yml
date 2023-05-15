@@ -1,0 +1,18 @@
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties: 
+      AccountRecoverySetting: 
+        verified_email
+      AdminCreateUserConfig: 
+        - AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes: 
+        - email
+      EmailConfiguration: 
+        - EmailSendingAccount: COGNITO_DEFAULT
+      MfaConfiguration: OFF
+      Policies: 
+        Policies
+      UsernameConfiguration: 
+        - CaseSensitive: true
+      UserPoolName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}
