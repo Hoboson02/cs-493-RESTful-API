@@ -8,26 +8,49 @@
 #         - EDGE
 #     Name: cs493RestfulAPI
 Resources:
-  RestfulAPIBucket:
-    Type: AWS::S3::Bucket
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
     Properties:
-      BucketName: !Sub ${self:service}-static-site
       # AccessControl: PublicRead
-      # WebsiteConfiguration:
-      #   IndexDocument: index.html
-  RestfulAPIBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    DependsOn: RestfulAPIBucket
+      BucketName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}
+      PublicAccessBlockConfiguration: 
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+                  
+      WebsiteConfiguration:
+        IndexDocument: index.html
+    DeletionPolicy: Retain
+  S3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
     Properties:
-      Bucket: !Ref RestfulAPIBucket
+      Bucket: !Ref S3Bucket
       PolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
-          - Sid: "PublicReadGetObject"
-            Effect: "Allow"
-            Principal: "*"
-            Action: ["s3:GetObject","s3:PutBucketPolicy"]
-            Resource: !Sub arn:aws:s3:::${self:service}-static-site/*
+          - Sid: 'PublicReadGetObject'
+            Effect: 'Allow'
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join
+              - ''
+              - - !GetAtt S3Bucket.Arn
+                - '/*'
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt 
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Join 
+      - ''
+      - - 'https://'
+        - !GetAtt 
+          - S3Bucket
+          - DomainName
+    Description: Name of S3 bucket to hold website content
 
   # myDistribution:
   #   Type: AWS::CloudFront::Distribution
