@@ -5,12 +5,11 @@ Resources:
       AccountRecoverySetting: 
         verified_email
       AdminCreateUserConfig: 
-        - AllowAdminCreateUserOnly: false
-      AutoVerifiedAttributes: 
-        - email
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes: email
       EmailConfiguration: 
-        - EmailSendingAccount: COGNITO_DEFAULT
+        EmailSendingAccount: COGNITO_DEFAULT
       MfaConfiguration: OFF
       UsernameConfiguration: 
-        - CaseSensitive: true
+        CaseSensitive: true
       UserPoolName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}
