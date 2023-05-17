@@ -1,168 +1,206 @@
 Resources:
-  RestApi:
-    Type: AWS::ApiGateway::RestApi
+  MyRestApi:
+    Type: 'AWS::ApiGateway::RestApi'
     Properties:
-      Name: MyRestApi
+      Name: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}-rest-api
+      Description: My REST API
       EndpointConfiguration:
         Types:
           - REGIONAL
+  MyRestApiNowDeployment: 
+    DependsOn: UserGetMethod
+    Type: AWS::ApiGateway::Deployment
+    Properties: 
+      RestApiId: !Ref MyRestApi
+      StageName: main
 
-  Resource:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId: !GetAtt RestApi.RootResourceId
-      PathPart: myresource
-      RestApiId: !Ref RestApi
+  MethodExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service: apigateway.amazonaws.com
+              Action: "sts:AssumeRole"
 
   GetMethod:
-    Type: AWS::ApiGateway::Method
+    DependsOn: MethodExecutionRole
+    Type: 'AWS::ApiGateway::Method'
     Properties:
       AuthorizationType: NONE
       HttpMethod: GET
-      ResourceId: !Ref Resource
-      RestApiId: !Ref RestApi
+      ResourceId: !GetAtt MyRestApi.RootResourceId
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+# ************************************** USER PATH **************************************
+  UserResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !GetAtt MyRestApi.RootResourceId
+      PathPart: user
+      RestApiId: !Ref MyRestApi
+
+  UserGetMethod:
+    DependsOn: MethodExecutionRole
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserResource
+      RestApiId: !Ref MyRestApi
       Integration:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
-        Uri:
-          !Join
-            - ''
-            - - 'arn:aws:apigateway:'
-              - !Ref 'AWS::Region'
-              - ':lambda:path/2015-03-31/functions/'
-              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-              - '/invocations'
-      MethodResponses:
-        - StatusCode: '200'
-          ResponseModels:
-            application/json: Empty
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
-  PostMethod:
-    Type: AWS::ApiGateway::Method
+  UserPostMethod:
+    DependsOn: MethodExecutionRole
+    Type: 'AWS::ApiGateway::Method'
     Properties:
       AuthorizationType: NONE
       HttpMethod: POST
-      ResourceId: !Ref Resource
-      RestApiId: !Ref RestApi
+      ResourceId: !Ref UserResource
+      RestApiId: !Ref MyRestApi
       Integration:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
-        Uri:
-          !Join
-            - ''
-            - - 'arn:aws:apigateway:'
-              - !Ref 'AWS::Region'
-              - ':lambda:path/2015-03-31/functions/'
-              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-              - '/invocations'
-      MethodResponses:
-        - StatusCode: '200'
-          ResponseModels:
-            application/json: Empty
-
-  BusinessResource:
-    Type: AWS::ApiGateway::Resource
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+  UserNameResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      ParentId: !GetAtt RestApi.RootResourceId
+      ParentId: !Ref UserResource
+      PathPart: '{username}'
+      RestApiId: !Ref MyRestApi
+
+  UserNameOwnedBusinessesResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNameResource
+      PathPart: 'owned-businesses'
+      RestApiId: !Ref MyRestApi
+
+  UserNameOwnedBusinessesBusinessResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNameOwnedBusinessesResource
+      PathPart: '{owned-business}'
+      RestApiId: !Ref MyRestApi
+
+  UserNamePhotosResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNameResource
+      PathPart: 'photos'
+      RestApiId: !Ref MyRestApi
+
+  UserNamePhotosPhotoResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNamePhotosResource
+      PathPart: '{photo}'
+      RestApiId: !Ref MyRestApi
+
+  UserNameReviewsResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNameResource
+      PathPart: 'reviews'
+      RestApiId: !Ref MyRestApi
+
+  UserNameReviewsReviewResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserNameReviewsResource
+      PathPart: '{review}'
+      RestApiId: !Ref MyRestApi
+# ************************************** BUSINESS PATH **************************************
+  BusinessResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !GetAtt MyRestApi.RootResourceId
       PathPart: business
-      RestApiId: !Ref RestApi
+      RestApiId: !Ref MyRestApi
 
   BusinessGetMethod:
-    Type: AWS::ApiGateway::Method
+    Type: 'AWS::ApiGateway::Method'
     Properties:
       AuthorizationType: NONE
       HttpMethod: GET
       ResourceId: !Ref BusinessResource
-      RestApiId: !Ref RestApi
+      RestApiId: !Ref MyRestApi
       Integration:
         Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri:
-          !Join
-            - ''
-            - - 'arn:aws:apigateway:'
-              - !Ref 'AWS::Region'
-              - ':lambda:path/2015-03-31/functions/'
-              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-              - '/invocations'
-      MethodResponses:
-        - StatusCode: '200'
-          ResponseModels:
-            application/json: Empty
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
-  BusinessPostMethod:
-    Type: AWS::ApiGateway::Method
+  BusinessNameResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      AuthorizationType: NONE
-      HttpMethod: POST
-      ResourceId: !Ref BusinessResource
-      RestApiId: !Ref RestApi
-      Integration:
-        Type: AWS_PROXY
-        IntegrationHttpMethod: POST
-        Uri:
-          !Join
-            - ''
-            - - 'arn:aws:apigateway:'
-              - !Ref 'AWS::Region'
-              - ':lambda:path/2015-03-31/functions/'
-              - 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-              - '/invocations'
-      MethodResponses:
-        - StatusCode: '200'
-          ResponseModels:
-            application/json: Empty
+      ParentId: !Ref BusinessResource
+      PathPart: '{business_name}'
+      RestApiId: !Ref MyRestApi
 
-  Deployment:
-    Type: AWS::ApiGateway::Deployment
+  BusinessNameInfoResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      RestApiId: !Ref RestApi
-      StageName: prod
+      ParentId: !Ref BusinessNameResource
+      PathPart: 'info'
+      RestApiId: !Ref MyRestApi
 
-  Stage:
-    Type: AWS::ApiGateway::Stage
+  BusinessNamePhotosResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      DeploymentId: !Ref Deployment
-      StageName: prod
-      MethodSettings:
-        - DataTraceEnabled: true
-          HttpMethod: '*'
-          LoggingLevel: INFO
-          ResourcePath: '/*'
+      ParentId: !Ref BusinessNameResource
+      PathPart: 'photos'
+      RestApiId: !Ref MyRestApi
 
-  ApiGatewayAccount:
-    Type: AWS::ApiGateway::Account
+  BusinessNamePhotosPhotoResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      CloudWatchRoleArn: !GetAtt CloudWatchRole.Arn
+      ParentId: !Ref BusinessNamePhotosResource
+      PathPart: '{photo}'
+      RestApiId: !Ref MyRestApi
 
-  CloudWatchRole:
-    Type: AWS::IAM::Role
+
+  BusinessNameReviewsResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - apigateway.amazonaws.com
-            Action:
-              - sts:AssumeRole
+      ParentId: !Ref BusinessNameResource
+      PathPart: 'reviews'
+      RestApiId: !Ref MyRestApi
 
-  PermissionForApigatewayToInvokeLambdaFunction:
-    Type: AWS::Lambda::Permission
+  BusinessNameReviewsReviewResource:
+    Type: 'AWS::ApiGateway::Resource'
     Properties:
-      FunctionName: 'arn:aws:lambda:us-west-2:209462133621:function:api-gateway-test'
-      Action: lambda:invokeFunction
-      Principal: apigateway.amazonaws.com
-
-Outputs:
-  ApiUrl:
-    Description: The URL of the API Gateway endpoint.
-    Value: 
-      !Join
-      - ''
-      - - 'https://'
-        - !Ref RestApi
-        - '.execute-api.'
-        - !Ref 'AWS::Region'
-        - '.amazonaws.com/prod'
+      ParentId: !Ref BusinessNameReviewsResource
+      PathPart: '{review}'
+      RestApiId: !Ref MyRestApi
