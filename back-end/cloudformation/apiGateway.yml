@@ -95,12 +95,84 @@ Resources:
       PathPart: '{username}'
       RestApiId: !Ref MyRestApi
 
+  UserNameGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserNameResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  UserNamePostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref UserNameResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   UserNameOwnedBusinessesResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref UserNameResource
       PathPart: 'owned-businesses'
       RestApiId: !Ref MyRestApi
+
+  UserNameOwnedBusinessesGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserNameOwnedBusinessesResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  UserNameOwnedBusinessesPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref UserNameOwnedBusinessesResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
   UserNameOwnedBusinessesBusinessResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -109,12 +181,66 @@ Resources:
       PathPart: '{owned-business}'
       RestApiId: !Ref MyRestApi
 
+  UserNameOwnedBusinessesBusinessDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref UserNameOwnedBusinessesBusinessResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   UserNamePhotosResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref UserNameResource
       PathPart: 'photos'
       RestApiId: !Ref MyRestApi
+
+  UserNamePhotosGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserNamePhotosResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  UserNamePhotosPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref UserNamePhotosResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
   UserNamePhotosPhotoResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -123,6 +249,24 @@ Resources:
       PathPart: '{photo}'
       RestApiId: !Ref MyRestApi
 
+  UserNamePhotosPhotoDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref UserNamePhotosPhotoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   UserNameReviewsResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
@@ -130,12 +274,84 @@ Resources:
       PathPart: 'reviews'
       RestApiId: !Ref MyRestApi
 
+  UserNameReviewsGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserNameReviewsResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  UserNameReviewsPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref UserNameReviewsResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   UserNameReviewsReviewResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref UserNameReviewsResource
       PathPart: '{review}'
       RestApiId: !Ref MyRestApi
+
+  UserNameReviewsReviewGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref UserNameReviewsReviewResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  UserNameReviewsReviewDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref UserNameReviewsReviewResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 # ************************************** BUSINESS PATH **************************************
   BusinessResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -162,12 +378,66 @@ Resources:
             - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
             - '/invocations'
 
+  BusinessPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref BusinessResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   BusinessNameResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref BusinessResource
       PathPart: '{business_name}'
       RestApiId: !Ref MyRestApi
+
+  BusinessNameGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNameResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNameResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
   BusinessNameInfoResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -176,12 +446,120 @@ Resources:
       PathPart: 'info'
       RestApiId: !Ref MyRestApi
 
+  BusinessNameInfoGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNameInfoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameInfoDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNameInfoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameInfoPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref BusinessNameInfoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   BusinessNamePhotosResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref BusinessNameResource
       PathPart: 'photos'
       RestApiId: !Ref MyRestApi
+
+  BusinessNamePhotosGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNamePhotosResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNamePhotosDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNamePhotosResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNamePhotosPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref BusinessNamePhotosResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
   BusinessNamePhotosPhotoResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -190,6 +568,41 @@ Resources:
       PathPart: '{photo}'
       RestApiId: !Ref MyRestApi
 
+  BusinessNamePhotosPhotoGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNamePhotosPhotoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNamePhotosPhotoDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNamePhotosPhotoResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
 
   BusinessNameReviewsResource:
     Type: 'AWS::ApiGateway::Resource'
@@ -198,9 +611,99 @@ Resources:
       PathPart: 'reviews'
       RestApiId: !Ref MyRestApi
 
+  BusinessNameReviewsGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNameReviewsResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameReviewsDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNameReviewsResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameReviewsPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref BusinessNameReviewsResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
   BusinessNameReviewsReviewResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       ParentId: !Ref BusinessNameReviewsResource
       PathPart: '{review}'
       RestApiId: !Ref MyRestApi
+
+  BusinessNameReviewsReviewGetMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      ResourceId: !Ref BusinessNameReviewsReviewResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+
+  BusinessNameReviewsReviewDeleteMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      ResourceId: !Ref BusinessNameReviewsReviewResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: DELETE
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
