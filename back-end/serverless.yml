@@ -26,13 +26,15 @@ provider:
         "status":"$context.status", "protocol":"$context.protocol", "responseLength":"$context.responseLength" }
   environment:
     region: ${self:provider.region}
-
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "lambda:InvokeFunction"
-        - "dynamodb:Scan"
       Resource: !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-*
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:Scan"
+      Resource: !Sub arn:aws:dynamodb:${self:provider.region}:${AWS::AccountId}:table/api-gateway-test
     - Effect: "Allow"
       Action:
         - "secretsmanager:GetSecretValue"

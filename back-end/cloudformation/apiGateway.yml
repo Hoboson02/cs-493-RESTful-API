@@ -1,4 +1,12 @@
 Resources:
+  Method1Permission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Sub ${self:service}-${self:provider.stage}-cs493RestfulAPI
+      Action: 'lambda:InvokeFunction'
+      SourceArn: arn:aws:execute-api:${self:provider.region}:${AWS::AccountId}:quc406za77/*
+      Principal: apigateway.amazonaws.com
+
   MyRestApi:
     Type: 'AWS::ApiGateway::RestApi'
     Properties:

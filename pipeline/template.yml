@@ -239,6 +239,7 @@ Resources:
               - dynamodb:DescribeTable
               - dynamodb:DescribeTimeToLive
               - dynamodb:ListTagsOfResource
+              - dynamodb:Scan
               - dynamodb:TagResource
               - dynamodb:UnTagResource
               - dynamodb:UpdateTimeToLive
