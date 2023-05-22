@@ -14,6 +14,8 @@ const dynamoDb = DynamoDBDocumentClient.from(client);
 
 const TABLE = 'api-gateway-test';
 
+const test = 'I need this to redeploy'
+
 function onlyContainsChar(str, char) {
     for (let i = 0; i < str.length; i++) {
         if (str[i] !== char) {
