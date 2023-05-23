@@ -88,6 +88,32 @@ Resources:
             - ':lambda:path/2015-03-31/functions/'
             - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-userCreation
             - '/invocations'
+  
+  UserLoginResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      ParentId: !Ref UserResource
+      PathPart: 'login'
+      RestApiId: !Ref MyRestApi
+
+  UserLoginPostMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !Ref UserLoginResource
+      RestApiId: !Ref MyRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Join
+          - ''
+          - - 'arn:aws:apigateway:'
+            - !Ref 'AWS::Region'
+            - ':lambda:path/2015-03-31/functions/'
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - '/invocations'
+  
   UserNameResource:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
