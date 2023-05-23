@@ -2,6 +2,6 @@ cs493RestfulAPI:
   handler: src/functions/cs493RestfulAPI.handler
   timeout: 60
 
-userLogin:
-  handler: src/functions/userLogin.handler
+userCreation:
+  handler: src/functions/userCreation.handler
   timeout: 60

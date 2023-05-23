@@ -86,7 +86,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - !Ref 'AWS::Region'
             - ':lambda:path/2015-03-31/functions/'
-            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-userLogin
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-userCreation
             - '/invocations'
   UserNameResource:
     Type: 'AWS::ApiGateway::Resource'

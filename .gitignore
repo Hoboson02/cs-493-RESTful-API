@@ -3,3 +3,4 @@
 back-end/.serverless/
 back-end/src/functions/post-test.js
 pipeline/run-cicd.py
+back-end/.webpack
