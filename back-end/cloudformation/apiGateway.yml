@@ -111,7 +111,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - !Ref 'AWS::Region'
             - ':lambda:path/2015-03-31/functions/'
-            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-cs493RestfulAPI
+            - !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-getUserLoginID
             - '/invocations'
   
   UserNameResource:
