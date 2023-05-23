@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 async function getSub(username, userPoolId) {
   const params = {
@@ -9,7 +9,7 @@ async function getSub(username, userPoolId) {
   };
 
   try {
-    const response = await cognitoIdentityServiceProvider.listUsers(params).promise();
+    const response = await cognito.listUsers(params).promise();
     if (response.Users.length > 0) {
       const user = response.Users[0];
       const subAttribute = user.Attributes.find(attribute => attribute.Name === 'sub');
@@ -38,7 +38,7 @@ exports.handler = async (event) => {
   const response = {};
 
   try {
-    const cognitoResponse = await cognitoIdentityServiceProvider.adminInitiateAuth(params).promise();
+    const cognitoResponse = await cognito.adminInitiateAuth(params).promise();
     const idToken = cognitoResponse.AuthenticationResult.IdToken;
     uuid = await getSub(username, userPoolId);
     console.log(`uuid: ${uuid}`);
