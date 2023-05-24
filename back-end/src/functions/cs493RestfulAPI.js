@@ -23,6 +23,48 @@ function onlyContainsChar(str, char) {
     return true;
 }
 
+async function getUserUUID(idToken) {
+  const params = {
+    AccessToken: idToken
+  };
+  try {
+    const response = await cognitoidentityserviceprovider.getUser(params).promise();
+    return response.UserAttributes.find(attribute => attribute.Name === 'sub').Value;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+async function verifyIdToken(idToken) {
+  uuid = getUserUUID(idToken)
+  const user = await searchUser(uuid);
+  if (user) {
+    const params = {
+      UserPoolId: 'us-west-2_ekoh7tmz0',
+      Username: user.Username
+    };
+    try {
+      const response = await cognito.adminGetUser(params).promise();
+      const userAttributes = response.UserAttributes;
+      const sub = userAttributes.find(attribute => attribute.Name === 'sub').Value;
+      const iss = `https://cognito-idp.us-west-2.amazonaws.com/${USER_POOL_ID}`;
+      const decodedToken = jwt.decode(idToken, {complete: true});
+      if (decodedToken.payload.sub === sub && decodedToken.payload.iss === iss) {
+        console.log('ID token is valid');
+        return true;
+      } else {
+        console.log('ID token is invalid');
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    console.log('User not found');
+  }
+}
+
 async function deleteNestedObject(tableName, primaryKey, primaryValue, nestedObjectKeys) {
  const updateExpression = `REMOVE ${nestedObjectKeys.join('.')}`;
  const params = {
@@ -101,15 +143,21 @@ export const handler = async (event) => {
       response.body = JSON.stringify(result);
      }
      else if (pathArray[0] == 'user'){
-      let result = userPath;
-      if (pathArray.length >= 1) {
-       result = result['entityName'];
-       for (let i = 1; i < pathArray.length; i++) {
-            result = result[pathArray[i]];
+      try {
+        const idToken = eventBody.idToken;
+        if (verifyIdToken(idToken)) {
+          let result = userPath;
+          if (pathArray.length >= 1) {
+            result = result['entityName'];
+            for (let i = 1; i < pathArray.length; i++) {
+                  result = result[pathArray[i]];
+            }
+          }
+          response.body = JSON.stringify(result);
         }
       }
-      response.body = JSON.stringify(result);
-     }
+      catch {response.body = 'Invalid Credentials'}
+      }
      else {
       response.body = JSON.stringify(data['Items']);
      }
