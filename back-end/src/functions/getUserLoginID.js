@@ -48,5 +48,6 @@ exports.handler = async (event) => {
       response.statusCode = 401;
       response.body = JSON.stringify({ error: error.message });
   }
+  console.log(response);
   return response;
 };

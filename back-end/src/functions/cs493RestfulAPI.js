@@ -7,6 +7,8 @@ import {
   GetCommand,
   DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
+const cognito = new AWS.CognitoIdentityServiceProvider();
+const AWS = require('aws-sdk');
 
 const client = new DynamoDBClient({region: 'us-west-2'});
 
@@ -28,7 +30,8 @@ async function getUserUUID(idToken) {
     AccessToken: idToken
   };
   try {
-    const response = await cognitoidentityserviceprovider.getUser(params).promise();
+    const response = await cognito.getUser(params).promise();
+    // console.log(`In GetUserUUID and this is the response: ${response}`);
     return response.UserAttributes.find(attribute => attribute.Name === 'sub').Value;
   } catch (error) {
     console.log(error);
@@ -38,6 +41,7 @@ async function getUserUUID(idToken) {
 
 async function verifyIdToken(idToken) {
   uuid = getUserUUID(idToken)
+  console.log(`In verifyIdToken and this is the uuid: ${uuid}`);
   const user = await searchUser(uuid);
   if (user) {
     const params = {
@@ -46,9 +50,10 @@ async function verifyIdToken(idToken) {
     };
     try {
       const response = await cognito.adminGetUser(params).promise();
+      // console.log(`In If statement and this is the response for get user: ${response}`)
       const userAttributes = response.UserAttributes;
       const sub = userAttributes.find(attribute => attribute.Name === 'sub').Value;
-      const iss = `https://cognito-idp.us-west-2.amazonaws.com/${USER_POOL_ID}`;
+      const iss = `https://cognito-idp.us-west-2.amazonaws.com/${UserPoolId}`;
       const decodedToken = jwt.decode(idToken, {complete: true});
       if (decodedToken.payload.sub === sub && decodedToken.payload.iss === iss) {
         console.log('ID token is valid');
@@ -62,6 +67,7 @@ async function verifyIdToken(idToken) {
     }
   } else {
     console.log('User not found');
+    return false;
   }
 }
 
@@ -144,8 +150,9 @@ export const handler = async (event) => {
      }
      else if (pathArray[0] == 'user'){
       try {
-        const idToken = eventBody.idToken;
+        const idToken = event.headers.Authorization;
         if (verifyIdToken(idToken)) {
+          console.log("Verified User");
           let result = userPath;
           if (pathArray.length >= 1) {
             result = result['entityName'];
