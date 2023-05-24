@@ -7,9 +7,9 @@ import {
   GetCommand,
   DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
-const cognito = new AWS.CognitoIdentityServiceProvider();
 const AWS = require('aws-sdk');
-
+const cognito = new AWS.CognitoIdentityServiceProvider();
+const jwt = require('jsonwebtoken');
 const client = new DynamoDBClient({region: 'us-west-2'});
 
 const dynamoDb = DynamoDBDocumentClient.from(client);
@@ -17,12 +17,12 @@ const dynamoDb = DynamoDBDocumentClient.from(client);
 const TABLE = 'api-gateway-test';
 
 function onlyContainsChar(str, char) {
-    for (let i = 0; i < str.length; i++) {
-        if (str[i] !== char) {
-            return false;
-        }
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] !== char) {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
 async function getUserUUID(idToken) {
@@ -30,41 +30,24 @@ async function getUserUUID(idToken) {
     AccessToken: idToken
   };
   try {
-    const response = await cognito.getUser(params).promise();
-    // console.log(`In GetUserUUID and this is the response: ${response}`);
-    return response.UserAttributes.find(attribute => attribute.Name === 'sub').Value;
+    const decoded = jwt.decode(idToken);
+    // const response = await cognito.getUser(params).promise();
+    const sub = decoded.sub;
+    // const sub = response.UserAttributes.find(attribute => attribute.Name === 'sub').Value;
+    return sub;
   } catch (error) {
-    console.log(error);
+    console.error('An error occurred while calling cognito.getUser:', error);
     return null;
   }
 }
 
-async function verifyIdToken(idToken) {
-  uuid = getUserUUID(idToken)
-  console.log(`In verifyIdToken and this is the uuid: ${uuid}`);
-  const user = await searchUser(uuid);
-  if (user) {
-    const params = {
-      UserPoolId: 'us-west-2_ekoh7tmz0',
-      Username: user.Username
-    };
-    try {
-      const response = await cognito.adminGetUser(params).promise();
-      // console.log(`In If statement and this is the response for get user: ${response}`)
-      const userAttributes = response.UserAttributes;
-      const sub = userAttributes.find(attribute => attribute.Name === 'sub').Value;
-      const iss = `https://cognito-idp.us-west-2.amazonaws.com/${UserPoolId}`;
-      const decodedToken = jwt.decode(idToken, {complete: true});
-      if (decodedToken.payload.sub === sub && decodedToken.payload.iss === iss) {
-        console.log('ID token is valid');
-        return true;
-      } else {
-        console.log('ID token is invalid');
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
-    }
+async function verifyIdToken(idToken, user) {
+  let uuid = await getUserUUID(idToken)
+  // const decodedToken = jwt.decode(idToken, {complete: true});
+  // const sub = decodedToken.payload.sub;
+  console.log(`user: ${user}- idToken: ${uuid}`)
+  if (uuid == user) {
+    return true;
   } else {
     console.log('User not found');
     return false;
@@ -116,9 +99,9 @@ export const handler = async (event) => {
  console.log(event);
  const request = event['httpMethod'];
  let data = await dynamoDb.send(
-          new ScanCommand({ TableName: TABLE })
-        );
-        // data = data.Items;
+  new ScanCommand({ TableName: TABLE })
+  );
+  // data = data.Items;
  const response = {
    isBase64Encoded: false,
    headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
@@ -151,7 +134,7 @@ export const handler = async (event) => {
      else if (pathArray[0] == 'user'){
       try {
         const idToken = event.headers.Authorization;
-        if (verifyIdToken(idToken)) {
+        if (await verifyIdToken(idToken, pathArray[1])) {
           console.log("Verified User");
           let result = userPath;
           if (pathArray.length >= 1) {
