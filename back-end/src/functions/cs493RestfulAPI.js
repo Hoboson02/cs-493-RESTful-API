@@ -26,6 +26,9 @@ function onlyContainsChar(str, char) {
 }
 
 async function getUserUUID(idToken) {
+  idToken = idToken.split(' ');
+  idToken = idToken[1];
+  console.log(idToken)
   const params = {
     AccessToken: idToken
   };
@@ -137,6 +140,7 @@ export const handler = async (event) => {
      else if (pathArray[0] == 'user'){
       console.log(pathArray[0]);
       try {
+        console.log(event.headers);
         const idToken = event.headers.Authorization;
         console.log("Tried to get idToken");
         if (await verifyIdToken(idToken, pathArray[1])) {
@@ -149,6 +153,7 @@ export const handler = async (event) => {
             }
           }
           response.body = JSON.stringify(result);
+          console.log(result);
         }
         else {
           console.log("idToken failed");
@@ -282,5 +287,6 @@ export const handler = async (event) => {
  } else {
    response.statusCode = 500;
  }
+ console.log(response);
  return response;
 };
