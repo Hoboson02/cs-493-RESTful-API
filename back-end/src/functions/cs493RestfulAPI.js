@@ -42,6 +42,9 @@ async function getUserUUID(idToken) {
 }
 
 async function verifyIdToken(idToken, user) {
+  if (idToken == null) {
+    return false;
+  }
   let uuid = await getUserUUID(idToken)
   // const decodedToken = jwt.decode(idToken, {complete: true});
   // const sub = decodedToken.payload.sub;
@@ -96,8 +99,8 @@ async function updateNestedObject(tableName, primaryKey, primaryValue, nestedObj
 }
 
 export const handler = async (event) => {
- console.log(event);
  const request = event['httpMethod'];
+ console.log(request);
  let data = await dynamoDb.send(
   new ScanCommand({ TableName: TABLE })
   );
@@ -132,8 +135,10 @@ export const handler = async (event) => {
       response.body = JSON.stringify(result);
      }
      else if (pathArray[0] == 'user'){
+      console.log(pathArray[0]);
       try {
         const idToken = event.headers.Authorization;
+        console.log("Tried to get idToken");
         if (await verifyIdToken(idToken, pathArray[1])) {
           console.log("Verified User");
           let result = userPath;
@@ -145,8 +150,16 @@ export const handler = async (event) => {
           }
           response.body = JSON.stringify(result);
         }
+        else {
+          console.log("idToken failed");
+          throw new TypeError("idToken failed");
+        }
+        
       }
-      catch {response.body = 'Invalid Credentials'}
+      catch {
+        response.body = 'Invalid Credentials';
+        response.statusCode = 401;
+      }
       }
      else {
       response.body = JSON.stringify(data['Items']);
