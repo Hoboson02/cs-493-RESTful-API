@@ -16,7 +16,7 @@ phases:
     commands:
       # NPX used to keep version of serverless
       - echo "----- Running Front-End Build ------"
-      - aws s3 sync "./front-end" "s3://cs493-api-test2"
+      - aws s3 sync "./front-end" "s3://cs-493-restful-api-main-253515352635"
       - echo "----- Running Back-End Build ------"
       - cd ${CODEBUILD_SRC_DIR}/back-end
       - npm install
