@@ -51,6 +51,7 @@ provider:
 resources:
   - ${file(cloudformation/resources.yml)}
   - ${file(cloudformation/apiGateway.yml)}
+  - ${file(cloudformation/dynamodb.yml)}
 
 functions:
   - ${file(cloudformation/functions.yml)}
