@@ -2,17 +2,13 @@ Resources:
   GatewayTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:service}-${self:provider.stage}-api-data
+      TableName: ${self:service}-${self:provider.stage}-data
       AttributeDefinitions:
         - AttributeName: id
-          AttributeType: S
-        - AttributeName: entityName
           AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
-        - AttributeName: entityName
-          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
