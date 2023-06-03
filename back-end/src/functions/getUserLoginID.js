@@ -22,7 +22,7 @@ async function getSub(username, userPoolId) {
 
 exports.handler = async (event) => {
   const { username, password } = JSON.parse(event.body);
-  const userPoolId = 'us-west-2_ekoh7tmz0';
+  const userPoolId = 'us-west-2_tfkTO9W32';
   const clientId = '53celvm09ucuh4cpiui7ugtvv2';
 
   const params = {

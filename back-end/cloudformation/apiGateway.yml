@@ -761,3 +761,13 @@ Resources:
       RestApiId: !Ref MyRestApi
       ProviderARNs:
         - !GetAtt UserPool.Arn
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}-client
+      UserPoolId: !Ref UserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      ExplicitAuthFlows:
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH

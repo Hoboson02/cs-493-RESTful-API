@@ -14,7 +14,7 @@ const client = new DynamoDBClient({region: 'us-west-2'});
 
 const dynamoDb = DynamoDBDocumentClient.from(client);
 
-const TABLE = 'api-gateway-test';
+const TABLE = 'cs-493-restful-api-main-data';
 
 function onlyContainsChar(str, char) {
   for (let i = 0; i < str.length; i++) {
@@ -199,14 +199,14 @@ export const handler = async (event) => {
       if (result.toString().includes("Your Rating was Invalid")) {
         result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
       } else {
-        updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+        updateNestedObject("cs-493-restful-api-main-data", "id", "business", result, eventBody);
         result = "Your POST request was successfully completed";
       }
-    //   updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+    //   updateNestedObject("cs-493-restful-api-main-data", "id", "business", result, eventBody);
       response.body = JSON.stringify(result);
      }
      else if (pathArray[0] == 'user'){
-      updateNestedObject("api-gateway-test", "id", "user", ["entityName"], eventBody);
+      updateNestedObject("cs-493-restful-api-main-data", "id", "user", ["entityName"], eventBody);
       response.body = JSON.stringify(event);
      }
      else {
@@ -220,7 +220,7 @@ export const handler = async (event) => {
       for (let i = 1; i < pathArray.length; i++) {
             result.push(pathArray[i]);
         }
-      deleteNestedObject("api-gateway-test", "id", "business", result);
+      deleteNestedObject("cs-493-restful-api-main-data", "id", "business", result);
       result = "Your DELETE request was successfully completed";
       response.body = JSON.stringify(result);
      }
@@ -229,7 +229,7 @@ export const handler = async (event) => {
       for (let i = 1; i < pathArray.length; i++) {
             result.push(pathArray[i]);
         }
-      deleteNestedObject("api-gateway-test", "id", "user", result);
+      deleteNestedObject("cs-493-restful-api-main-data", "id", "user", result);
       result = "Your DELETE request was successfully completed";
       response.body = JSON.stringify(result);
      }
@@ -266,14 +266,14 @@ export const handler = async (event) => {
       if (result.toString().includes("Your Rating was Invalid")) {
         result = "One of your ratings was invalid. For your star rating please make sure you are only inputting a number from 0-5 and that you are only inputting a $ between 1-4 times for your price rating.";
       } else {
-        updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+        updateNestedObject("cs-493-restful-api-main-data", "id", "business", result, eventBody);
         result = "Your PUT request was successfully completed";
       }
-    //   updateNestedObject("api-gateway-test", "id", "business", result, eventBody);
+    //   updateNestedObject("cs-493-restful-api-main-data", "id", "business", result, eventBody);
       response.body = JSON.stringify(result);
      }
      else if (pathArray[0] == 'user'){
-      updateNestedObject("api-gateway-test", "id", "user", ["entityName"], eventBody);
+      updateNestedObject("cs-493-restful-api-main-data", "id", "user", ["entityName"], eventBody);
       response.body = JSON.stringify(event);
      }
      else {

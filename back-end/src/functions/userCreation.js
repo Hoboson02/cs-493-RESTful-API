@@ -49,7 +49,7 @@ async function addUser(tableName, userId) {
 exports.handler = async (event) => {
   const body = JSON.parse(event.body);
   const { username, password } = body;
-  const userPoolId = 'us-west-2_ekoh7tmz0';
+  const userPoolId = 'us-west-2_tfkTO9W32';
   const clientId = '53celvm09ucuh4cpiui7ugtvv2';
   try {
     await cognito.signUp({
@@ -64,7 +64,7 @@ exports.handler = async (event) => {
     }).promise();
 
     uuid = await getSub(username, userPoolId)
-    await addUser('api-gateway-test', uuid);
+    await addUser('cs-493-restful-api-main-data', uuid);
     return { success: true };
   } catch (error) {
     console.error(error);

@@ -57,4 +57,4 @@ async function updateNestedObject(tableName, primaryKey, primaryValue, nestedObj
 	}
 }
 
-updateNestedObject('api-gateway-test', 'id', 'business', 'entityName', newData);
+updateNestedObject('cs-493-restful-api-main-data', 'id', 'business', 'entityName', newData);
