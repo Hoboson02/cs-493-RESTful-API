@@ -751,6 +751,8 @@ Resources:
       UsernameConfiguration: 
         CaseSensitive: true
       UserPoolName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}
+      UserPoolAddOns:
+        AdvancedSecurityMode: ENFORCED
 
   MyAuthorizer:
     Type: AWS::ApiGateway::Authorizer
@@ -768,5 +770,6 @@ Resources:
       ClientName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}-client
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
+        - ALLOW_ADMIN_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
-        - ALLOW_USER_SRP_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
