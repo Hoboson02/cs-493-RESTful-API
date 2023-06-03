@@ -767,15 +767,6 @@ Resources:
     Properties:
       ClientName: !Sub ${self:service}-${self:provider.stage}-${AWS::AccountId}-client
       UserPoolId: !Ref UserPool
-      AllowedOAuthFlowsUserPoolClient: true
-      AllowedOAuthFlows:
-        - code
-        - implicit
-      AllowedOAuthScopes:
-        - phone
-        - email
-        - openid
-        - profile
       ExplicitAuthFlows:
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_USER_SRP_AUTH
