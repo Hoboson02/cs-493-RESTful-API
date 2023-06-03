@@ -23,7 +23,7 @@ async function getSub(username, userPoolId) {
 exports.handler = async (event) => {
   const { username, password } = JSON.parse(event.body);
   const userPoolId = 'us-west-2_tfkTO9W32';
-  const clientId = '53celvm09ucuh4cpiui7ugtvv2';
+  const clientId = 'r4e8abnl9tlangiiin8pdf30c';
 
   const params = {
     AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',

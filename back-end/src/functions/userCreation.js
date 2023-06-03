@@ -50,7 +50,7 @@ exports.handler = async (event) => {
   const body = JSON.parse(event.body);
   const { username, password } = body;
   const userPoolId = 'us-west-2_tfkTO9W32';
-  const clientId = '53celvm09ucuh4cpiui7ugtvv2';
+  const clientId = 'r4e8abnl9tlangiiin8pdf30c';
   try {
     await cognito.signUp({
       ClientId: clientId,

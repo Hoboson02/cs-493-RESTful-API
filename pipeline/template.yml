@@ -235,6 +235,7 @@ Resources:
               - cognito-idp:DeleteUserPool
               - cognito-idp:DeleteUserPoolClient
               - cognito-idp:DeleteUserPoolDomain
+              - cognito-idp:UpdateUserPool
               - dynamodb:CreateTable
               - dynamodb:DeleteTable
               - dynamodb:DescribeTable
