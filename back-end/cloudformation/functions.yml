@@ -9,3 +9,7 @@ userCreation:
 getUserLoginID:
   handler: src/functions/getUserLoginID.handler
   timeout: 60
+
+uploadImages:
+  handler: src/functions/uploadImages.handler
+  timeout: 60
