@@ -47,6 +47,11 @@ provider:
         - "secretsmanager:GetSecretValue"
       Resource:
         - !Sub arn:aws:secretsmanager:${self:provider.region}:${AWS::AccountId}:secret:${self:service}-*
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        - !Sub arn:aws:s3:::${self:service}-${self:provider.stage}-${AWS::AccountId}/*
 
 resources:
   - ${file(cloudformation/resources.yml)}
