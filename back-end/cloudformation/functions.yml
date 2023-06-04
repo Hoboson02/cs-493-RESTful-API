@@ -10,6 +10,6 @@ getUserLoginID:
   handler: src/functions/getUserLoginID.handler
   timeout: 60
 
-uploadImages:
-  handler: src/functions/uploadImages.handler
+uploadImage:
+  handler: src/functions/uploadImage.handler
   timeout: 60
