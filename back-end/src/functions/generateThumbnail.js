@@ -18,8 +18,6 @@ let srcKeyReduced = srcKey.split('/')[1];
 console.log(srcKeyReduced);
 const dstBucket = srcBucket;
 console.log(dstBucket);
-const dstKey    = `${dstBucket}/thumbnails/${srcKeyReduced}`;
-console.log(dstKey);
                 
 // Infer the image type from the file suffix.
 const typeMatch = srcKeyReduced.match(/\.([^.]*)$/);
@@ -40,7 +38,7 @@ if (imageType != "jpg" && imageType != "png" && imageType != "jpeg") {
 try {
   const params = {
     Bucket: srcBucket,
-    Key: srcKeyReduced
+    Key: `images/${srcKeyReduced}`
   };
   var origimage = await s3.getObject(params).promise();
                 
@@ -53,7 +51,7 @@ const width  = 200;
                 
 // Use the sharp module to resize the image and save in a buffer.
 try {
-  // var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+  var buffer = await sharp(origimage.Body).resize(width).toBuffer();
                 
 } catch (error) {
   console.log(error);
@@ -62,15 +60,15 @@ try {
                 
 // Upload the thumbnail image to the destination bucket
 try {
-  // const destparams = {
-  //   Bucket: dstBucket,
-  //   Key: dstKey,
-  //   Body: buffer,
-  //   ContentType: "image"
-  // };
-  // console.log(`DESTPARAMS: ${destparams}`);              
-  // const putResult = await s3.putObject(destparams).promise();
-  // console.log(`DESTPARAMS: ${putResult}`);
+  const destparams = {
+    Bucket: dstBucket,
+    Key: `thumbnails/${srcKeyReduced}`,
+    Body: buffer,
+    ContentType: "image"
+  };
+  console.log(`DESTPARAMS: ${destparams}`);              
+  const putResult = await s3.putObject(destparams).promise();
+  console.log(`DESTPARAMS: ${putResult}`);
                 
   } catch (error) {
     console.log(error);
@@ -78,5 +76,5 @@ try {
   }
                 
   console.log('Successfully resized ' + srcBucket + '/' + srcKeyReduced +
-    ' and uploaded to ' + dstBucket + '/' + dstKey);
+    ` and uploaded to ${dstBucket}/thumbnails/${srcKeyReduced}`);
   };
