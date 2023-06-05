@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const util = require('util');
-const sharp = require('sharp');
+// const sharp = require('sharp');
                 
 // get reference to S3 client
 const s3 = new AWS.S3();
@@ -18,7 +18,8 @@ let srcKeyReduced = srcKey.split('/')[1];
 console.log(srcKeyReduced);
 const dstBucket = srcBucket;
 console.log(dstBucket);
-const dstKey    = `thumbnails/${srcKeyReduced}`;
+const dstKey    = `${dstBucket}/thumbnails/${srcKeyReduced}`;
+console.log(dstKey);
                 
 // Infer the image type from the file suffix.
 const typeMatch = srcKeyReduced.match(/\.([^.]*)$/);
@@ -52,7 +53,7 @@ const width  = 200;
                 
 // Use the sharp module to resize the image and save in a buffer.
 try {
-  var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+  // var buffer = await sharp(origimage.Body).resize(width).toBuffer();
                 
 } catch (error) {
   console.log(error);
@@ -61,14 +62,15 @@ try {
                 
 // Upload the thumbnail image to the destination bucket
 try {
-  const destparams = {
-    Bucket: dstBucket,
-    Key: dstKey,
-    Body: buffer,
-    ContentType: "image"
-  };
-                
-  const putResult = await s3.putObject(destparams).promise();
+  // const destparams = {
+  //   Bucket: dstBucket,
+  //   Key: dstKey,
+  //   Body: buffer,
+  //   ContentType: "image"
+  // };
+  // console.log(`DESTPARAMS: ${destparams}`);              
+  // const putResult = await s3.putObject(destparams).promise();
+  // console.log(`DESTPARAMS: ${putResult}`);
                 
   } catch (error) {
     console.log(error);
