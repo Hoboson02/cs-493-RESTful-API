@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const util = require('util');
-const sharp = require('sharp');
+// const sharp = require('sharp');
                 
 // get reference to S3 client
 const s3 = new AWS.S3();
@@ -14,11 +14,14 @@ console.log(event);
 console.log(srcBucket);
 // Object key may have spaces or unicode non-ASCII characters.
 const srcKey    = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
+let srcKeyReduced = srcKey.split('/')[1];
+console.log(srcKeyReduced);
 const dstBucket = srcBucket;
-const dstKey    = `thumbnails/${srcKey}`;
+console.log(dstBucket);
+const dstKey    = `thumbnails/${srcKeyReduced}`;
                 
 // Infer the image type from the file suffix.
-const typeMatch = srcKey.match(/\.([^.]*)$/);
+const typeMatch = srcKeyReduced.match(/\.([^.]*)$/);
 if (!typeMatch) {
   console.log("Could not determine the image type.");
   return;
@@ -36,7 +39,7 @@ if (imageType != "jpg" && imageType != "png") {
 try {
   const params = {
     Bucket: srcBucket,
-    Key: srcKey
+    Key: srcKeyReduced
   };
   var origimage = await s3.getObject(params).promise();
                 
@@ -49,7 +52,7 @@ const width  = 200;
                 
 // Use the sharp module to resize the image and save in a buffer.
 try {
-  var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+  // var buffer = await sharp(origimage.Body).resize(width).toBuffer();
                 
 } catch (error) {
   console.log(error);
@@ -72,6 +75,6 @@ try {
     return;
   }
                 
-  console.log('Successfully resized ' + srcBucket + '/' + srcKey +
+  console.log('Successfully resized ' + srcBucket + '/' + srcKeyReduced +
     ' and uploaded to ' + dstBucket + '/' + dstKey);
   };

@@ -73,10 +73,11 @@ exports.handler = async (event) => {
       Body: binaryImageData,
       ContentType: contentType
     }).promise();
-    const newData = JSON.stringify({result : imageAddress});
+    const newData = JSON.stringify({[result] : imageAddress});
+    const newThumbnailData = JSON.stringify({[result] : imageThumbnailAddress});
     console.log(newData);
-    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, {result: imageAddress});
-    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, {result: imageThumbnailAddress});
+    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, newData);
+    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, newThumbnailData);
     return {
       
       statusCode: 200,
