@@ -65,6 +65,7 @@ exports.handler = async (event) => {
   let date = new Date().toJSON();
   let result = date.split('.')[0];
   let imageAddress = `https://cs-493-restful-api-main-253515352635.s3.us-west-2.amazonaws.com/images/${result}.${imageType}`;
+  let imageThumbnailAddress = `https://cs-493-restful-api-main-253515352635.s3.us-west-2.amazonaws.com/thumbnails/${result}.${imageType}`;
   try {
     await s3.putObject({
       Bucket: bucket,
@@ -74,7 +75,8 @@ exports.handler = async (event) => {
     }).promise();
     const newData = JSON.stringify({result : imageAddress});
     console.log(newData);
-    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", [ 'entityName', 'testBusiness1', 'photos' ], '{"2023-06-05T01:19:07": "https://cs-493-restful-api-main-253515352635.s3.us-west-2.amazonaws.com/images/2023-06-05T01:19:07.png"}');
+    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, {result: imageAddress});
+    await updateNestedObject("cs-493-restful-api-main-data", "id", "business", pathArray, {result: imageThumbnailAddress});
     return {
       
       statusCode: 200,
