@@ -98,3 +98,9 @@ apiUrl='https://7pophi9tm0.execute-api.us-west-2.amazonaws.com/main/user/4ca62aa
 response=$(curl -s -X GET -H "Content-Type: application/json" -H "Authorization: $idToken" $apiUrl)
 
 echo "Response: $response"
+
+# Image Upload
+
+curl --location --request PUT 'https://6wh3dsetqa.execute-api.us-west-2.amazonaws.com/main/business/testBusiness1/photos' \
+--header 'Content-Type: image/png' \
+--data '@/C:/Users/ryanl/Desktop/Streaming stuff/Hobo_(Gaz,_Taster_of_Pork).png'

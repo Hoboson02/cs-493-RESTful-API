@@ -1,10 +1,8 @@
 const AWS = require('aws-sdk');
-const multipart = require('aws-lambda-multipart-parser');
 const s3 = new AWS.S3();
 
 exports.handler = async (event) => {
-  const result = multipart.parse(event);
-  console.log(result);
+  console.log(event.body);
   const bucket = 'cs-493-restful-api-main-253515352635'
   const contentDispositionHeader = event.body.match(/Content-Disposition: form-data; name=""; filename="(.+)"/i);
   console.log(`THIS TIS THE EXTRACT HEADER DATA: ${contentDispositionHeader}`);
