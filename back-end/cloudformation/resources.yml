@@ -18,9 +18,12 @@ Resources:
         BlockPublicPolicy: false
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
-                  
       WebsiteConfiguration:
         IndexDocument: index.html
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:Put
+            Function: !Sub arn:aws:lambda:${self:provider.region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-generateThumbnail
     DeletionPolicy: Retain
   S3BucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
@@ -36,7 +39,7 @@ Resources:
             Resource: !Join
               - ''
               - - !GetAtt S3Bucket.Arn
-                - '/*'
+                - '/*'         
 Outputs:
   WebsiteURL:
     Value: !GetAtt 

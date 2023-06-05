@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "busboy": "^1.6.0",
-    "serverless-plugin-resource-tagging": "^1.2.0"
+    "serverless-plugin-resource-tagging": "^1.2.0",
+    "sharp": "^0.32.1"
   }
 }

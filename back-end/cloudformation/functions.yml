@@ -13,3 +13,7 @@ getUserLoginID:
 uploadImage:
   handler: src/functions/uploadImage.handler
   timeout: 60
+
+generateThumbnail:
+  handler: src/functions/generateThumbnail.handler
+  timeout: 60
