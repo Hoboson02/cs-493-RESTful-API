@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const util = require('util');
-// const sharp = require('sharp');
+const sharp = require('sharp');
                 
 // get reference to S3 client
 const s3 = new AWS.S3();
@@ -52,7 +52,7 @@ const width  = 200;
                 
 // Use the sharp module to resize the image and save in a buffer.
 try {
-  // var buffer = await sharp(origimage.Body).resize(width).toBuffer();
+  var buffer = await sharp(origimage.Body).resize(width).toBuffer();
                 
 } catch (error) {
   console.log(error);
