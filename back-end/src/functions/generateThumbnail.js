@@ -10,9 +10,11 @@ exports.handler = async (event, context, callback) => {
 // Read options from the event parameter.
 console.log("Reading options from event:\n", util.inspect(event, {depth: 5}));
 const srcBucket = event.Records[0].s3.bucket.name;
+console.log(event);
+console.log(srcBucket);
 // Object key may have spaces or unicode non-ASCII characters.
 const srcKey    = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
-const dstBucket = srcBucket + "-resized";
+const dstBucket = srcBucket;
 const dstKey    = "thumbnails/resized-" + srcKey;
                 
 // Infer the image type from the file suffix.
@@ -41,8 +43,7 @@ try {
 } catch (error) {
   console.log(error);
   return;
-}
-                
+}        
 // set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
 const width  = 200;
                 
